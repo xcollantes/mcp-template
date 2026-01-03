@@ -3,6 +3,7 @@
 import logging
 import os
 import textwrap
+from typing import Annotated, Any
 
 import httpx
 from mcp.server.fastmcp import FastMCP
@@ -25,7 +26,12 @@ mcp: FastMCP = FastMCP("weather")
     title="Get weather forecast data for a location.",
     description="Retrieves weather forecast information from the National Weather Service API for the specified location. The location should be in the format of latitude,longitude (e.g., '47.7623,-122.2054').",
 )
-def get_weather(location: str) -> dict:
+def get_weather(
+    location: Annotated[
+        str,
+        "Location coordinates in 'latitude,longitude' format, for example '47.7623,-122.2054'.",
+    ],
+) -> dict[str, Any]:
     """Get weather forecast data for a location.
 
     Retrieves weather forecast information from the National Weather Service API
@@ -54,7 +60,9 @@ def get_weather(location: str) -> dict:
     title="Get active weather alerts for a U.S. state.",
     description="Retrieves all currently active weather alerts, warnings, and advisories issued by the National Weather Service for the specified state. This includes severe weather warnings, flood advisories, winter weather alerts, and more.",
 )
-async def get_alerts(state: str) -> str:
+async def get_alerts(
+    state: Annotated[str, "Two-letter U.S. state code, for example 'WA' or 'CA'."],
+) -> str:
     """Get active weather alerts for a U.S. state.
 
     Retrieves all currently active weather alerts, warnings, and advisories
@@ -85,7 +93,10 @@ async def get_alerts(state: str) -> str:
     title="Get detailed weather forecast for a specific location.",
     description="Retrieves a multi-period weather forecast from the National Weather Service for the specified coordinates. The forecast includes temperature, wind conditions, and detailed descriptions for the next 5 forecast periods (typically covering the next 2-3 days).",
 )
-async def get_forecast(latitude: float, longitude: float) -> str:
+async def get_forecast(
+    latitude: Annotated[float, "Latitude in decimal degrees, for example 47.7623."],
+    longitude: Annotated[float, "Longitude in decimal degrees, for example -122.2054."],
+) -> str:
     """Get detailed weather forecast for a specific location.
 
     Retrieves a multi-period weather forecast from the National Weather Service

@@ -1,10 +1,11 @@
 import logging
 import textwrap
+from typing import Any
 
 import httpx
 
 
-def format_alert(feature: dict) -> str:
+def format_alert(feature: dict[str, Any]) -> str:
     props = feature["properties"]
     return textwrap.dedent(
         f"""
@@ -17,7 +18,7 @@ def format_alert(feature: dict) -> str:
     )
 
 
-async def make_request(url: str, user_agent: str) -> httpx.Response:
+async def make_request(url: str, user_agent: str) -> Any:
     async with httpx.AsyncClient() as client:
         try:
             response = await client.get(
