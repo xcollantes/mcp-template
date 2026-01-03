@@ -1,8 +1,12 @@
+"""Utility functions for the MCP server."""
+
 import logging
 import textwrap
 from typing import Any
 
 import httpx
+
+logger: logging.Logger = logging.getLogger("logger")
 
 
 def format_alert(feature: dict[str, Any]) -> str:
@@ -33,5 +37,5 @@ async def make_request(url: str, user_agent: str) -> Any:
             return response.json()
 
         except httpx.HTTPStatusError as e:
-            logging.error("HTTP error occurred: %s", e)
+            logger.error("HTTP error occurred: %s", e)
             raise e

@@ -3,6 +3,8 @@
 Each tool should have a docstring that describes what the tool does, what it returns,
 and what it expects as input as these will be used by the LLM to decide when to
 use the tool.
+
+TODO: Replace tools with your own tools.
 """
 
 import logging
@@ -16,14 +18,14 @@ from mcp.server.fastmcp import FastMCP
 from utils import format_alert, make_request
 
 
-logger: logging.Logger = logging.getLogger(__name__)
+logger: logging.Logger = logging.getLogger("logger")
 
 WEATHER_API_BASE = "https://api.weather.gov"
 WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
 USER_AGENT = "weather-app/1.0"
 
 # Create the MCP server instance.
-mcp: FastMCP = FastMCP("weather")
+mcp: FastMCP = FastMCP("TODO: weather")
 
 
 @mcp.tool(
