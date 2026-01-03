@@ -1,5 +1,22 @@
 """MCP tools."""
 
+import os
+import textwrap
+
+import httpx
+from mcp.server.fastmcp import FastMCP
+
+from mcp_server import get_mcp_server
+from utils import format_alert, make_request
+
+
+WEATHER_API_BASE = "https://api.weather.gov"
+WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
+USER_AGENT = "weather-app/1.0"
+
+mcp: FastMCP = get_mcp_server()
+
+
 @mcp.tool()
 def get_weather(location: str) -> dict:
     """Get weather by state."""
@@ -13,12 +30,12 @@ def get_weather(location: str) -> dict:
 
 
 @mcp.tool()
-def get_alerts(state: str) -> str:
+async def get_alerts(state: str) -> str:
     """Get weather alerts for a state."""
 
-    url: str = f"{NWS_API_BASE}/alerts/active/area/{state}"
+    url: str = f"{WEATHER_API_BASE}/alerts/active/area/{state}"
 
-    data = await make_nws_request(url)
+    data = await make_request(url, USER_AGENT)
     if not data or data.get("features") is None:
         return "Cannot get alerts or no alerts found."
 
@@ -36,15 +53,15 @@ async def get_forecast(latitude: float, longitude: float) -> str:
     """
 
     # First get the forecast grid endpoint
-    points_url = f"{NWS_API_BASE}/points/{latitude},{longitude}"
-    points_data = await make_nws_request(points_url)
+    points_url = f"{WEATHER_API_BASE}/points/{latitude},{longitude}"
+    points_data = await make_request(points_url, USER_AGENT)
 
     if not points_data:
         return "Unable to fetch forecast data for this location."
 
     # Get the forecast URL from the points response
     forecast_url = points_data["properties"]["forecast"]
-    forecast_data = await make_nws_request(forecast_url)
+    forecast_data = await points_data = await make_request(forecast_url, USER_AGENT)
 
     if not forecast_data:
         return "Unable to fetch detailed forecast."

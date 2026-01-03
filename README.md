@@ -50,9 +50,31 @@ Add MCP server to your choice of LLM client:
 
 **NOTE:** You will need to look up for your specific client on how to add MCPs.
 
-```bash
+Usually the JSON file for the LLM client will look like this:
 
+```json
+{
+  "mcpServers": {
+    "weather": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/ABSOLUTE/PATH/TO/REPO/src",
+        "run",
+        "main.py"
+      ]
+    }
+  }
+}
 ```
+
+You may need to install `uv`.
+
+Install UV: <https://docs.astral.sh/uv/getting-started/installation/>
+
+This will tell your LLM client application that there's a tool that can be
+called by calling `uv --directory
+/ABSOLUTE/PATH/TO/PARENT/FOLDER/src run main.py`.
 
 ## Architecture
 

@@ -1,7 +1,10 @@
+import logging
+import textwrap
+
 import httpx
 
 
-def format_alert(text: str) -> str:
+def format_alert(feature: dict) -> str:
     props = feature["properties"]
     return textwrap.dedent(
         f"""
@@ -14,13 +17,13 @@ def format_alert(text: str) -> str:
     )
 
 
-async def make_request(url: str) -> httpx.Response:
+async def make_request(url: str, user_agent: str) -> httpx.Response:
     async with httpx.AsyncClient() as client:
         try:
             response = await client.get(
                 url,
                 headers={
-                    "User-Agent": USER_AGENT,
+                    "User-Agent": user_agent,
                     "Accept": "application/geo+json",
                 },
                 timeout=10,
@@ -29,5 +32,5 @@ async def make_request(url: str) -> httpx.Response:
             return response.json()
 
         except httpx.HTTPStatusError as e:
-            log.error("HTTP error occurred: %s", e)
+            logging.error("HTTP error occurred: %s", e)
             raise e
