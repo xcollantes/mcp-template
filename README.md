@@ -19,32 +19,7 @@ MCP.tools decorator parameters are especially important as this is the human
 readable text that the LLM has context of. This will be treated as part of the
 prompt when fed to the LLM and this will decide when to use each tool.
 
-## Getting Started
-
-### How it works
-
-1. You enter some questions or prompt to a LLM Client such as the Claude
-   Desktop, Cursor, Windsurf, or ChatGPT.
-2. The client sends your question to the LLM model (Sonnet, Grok, ChatGPT)
-3. LLM analyzes the available tools and decides which one(s) to use
-   - The LLM you're using will have a context of the tools and what each tool
-     is meant for in human language.
-   - Alternatively without MCPs, you could include in the prompt the endpoints
-     and a description on each endpoint for the LLM to "call on". Then you could
-     copy and paste the text commands into the terminal on your machine.
-   - MCPs provide a more deterministic and standardized method on LLM-to-server
-     interactions.
-1. The client executes the chosen tool(s) through the MCP server.
-   - The MCP server is either running local on your machine or an endpoint
-     hosting the MCP server remotely.
-2. The results are sent back to LLM.
-3. LLM formulates a natural language response and one or both of the following
-   happen:
-   - The response is displayed to you with data from the MCP server
-   - Some action is performed using the MCP server
-​
-
-### Installation
+## Installation
 
 Get repo:
 
@@ -63,12 +38,7 @@ Usually the JSON file for the LLM client will look like this:
   "mcpServers": {
     "weather": {
       "command": "uv",
-      "args": [
-        "--directory",
-        "/ABSOLUTE/PATH/TO/REPO/src",
-        "run",
-        "main.py"
-      ]
+      "args": ["--directory", "/ABSOLUTE/PATH/TO/REPO/src", "run", "main.py"]
     }
   }
 }
@@ -81,6 +51,28 @@ Install UV: <https://docs.astral.sh/uv/getting-started/installation/>
 This will tell your LLM client application that there's a tool that can be
 called by calling `uv --directory
 /ABSOLUTE/PATH/TO/PARENT/FOLDER/src run main.py`.
+
+## How it works
+
+1. You enter some questions or prompt to a LLM Client such as the Claude
+   Desktop, Cursor, Windsurf, or ChatGPT.
+2. The client sends your question to the LLM model (Sonnet, Grok, ChatGPT)
+3. LLM analyzes the available tools and decides which one(s) to use
+   - The LLM you're using will have a context of the tools and what each tool
+     is meant for in human language.
+   - Alternatively without MCPs, you could include in the prompt the endpoints
+     and a description on each endpoint for the LLM to "call on". Then you could
+     copy and paste the text commands into the terminal on your machine.
+   - MCPs provide a more deterministic and standardized method on LLM-to-server
+     interactions.
+4. The client executes the chosen tool(s) through the MCP server.
+   - The MCP server is either running local on your machine or an endpoint
+     hosting the MCP server remotely.
+5. The results are sent back to LLM.
+6. LLM formulates a natural language response and one or both of the following
+   happen:
+   - The response is displayed to you with data from the MCP server
+   - Some action is performed using the MCP server
 
 ## Architecture
 
