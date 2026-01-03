@@ -1,4 +1,9 @@
-"""MCP server and tools definition."""
+"""MCP server and tools definition.
+
+Each tool should have a docstring that describes what the tool does, what it returns,
+and what it expects as input as these will be used by the LLM to decide when to
+use the tool.
+"""
 
 import logging
 import os
@@ -143,4 +148,3 @@ async def get_forecast(
         forecasts.append(forecast)
 
     return "\n".join(forecasts)
-
