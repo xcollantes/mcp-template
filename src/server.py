@@ -1,27 +1,29 @@
-"""MCP tools."""
+"""MCP server and tools definition."""
 
+import logging
 import os
 import textwrap
 
 import httpx
 from mcp.server.fastmcp import FastMCP
 
-from mcp_server import get_mcp_server
 from utils import format_alert, make_request
 
+
+logger: logging.Logger = logging.getLogger(__name__)
 
 WEATHER_API_BASE = "https://api.weather.gov"
 WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
 USER_AGENT = "weather-app/1.0"
 
-mcp: FastMCP = get_mcp_server()
+# Create the MCP server instance.
+mcp: FastMCP = FastMCP("weather")
 
 
 @mcp.tool(
     name="get_weather",
     title="Get weather forecast data for a location.",
     description="Retrieves weather forecast information from the National Weather Service API for the specified location. The location should be in the format of latitude,longitude (e.g., '47.7623,-122.2054').",
-    parameters=["location"],
 )
 def get_weather(location: str) -> dict:
     """Get weather forecast data for a location.
@@ -51,7 +53,6 @@ def get_weather(location: str) -> dict:
     name="get_alerts",
     title="Get active weather alerts for a U.S. state.",
     description="Retrieves all currently active weather alerts, warnings, and advisories issued by the National Weather Service for the specified state. This includes severe weather warnings, flood advisories, winter weather alerts, and more.",
-    parameters=["state"],
 )
 async def get_alerts(state: str) -> str:
     """Get active weather alerts for a U.S. state.
@@ -83,7 +84,6 @@ async def get_alerts(state: str) -> str:
     name="get_forecast",
     title="Get detailed weather forecast for a specific location.",
     description="Retrieves a multi-period weather forecast from the National Weather Service for the specified coordinates. The forecast includes temperature, wind conditions, and detailed descriptions for the next 5 forecast periods (typically covering the next 2-3 days).",
-    parameters=["latitude", "longitude"],
 )
 async def get_forecast(latitude: float, longitude: float) -> str:
     """Get detailed weather forecast for a specific location.
@@ -103,22 +103,21 @@ async def get_forecast(latitude: float, longitude: float) -> str:
         and a detailed forecast description. Returns an error message if the forecast
         cannot be retrieved for the specified location.
     """
-
-    # First get the forecast grid endpoint
+    # First get the forecast grid endpoint.
     points_url = f"{WEATHER_API_BASE}/points/{latitude},{longitude}"
     points_data = await make_request(points_url, USER_AGENT)
 
     if not points_data:
         return "Unable to fetch forecast data for this location."
 
-    # Get the forecast URL from the points response
+    # Get the forecast URL from the points response.
     forecast_url = points_data["properties"]["forecast"]
     forecast_data = await make_request(forecast_url, USER_AGENT)
 
     if not forecast_data:
         return "Unable to fetch detailed forecast."
 
-    # Format the periods into a readable forecast
+    # Format the periods into a readable forecast.
     periods = forecast_data["properties"]["periods"]
     forecasts = []
     for period in periods[:5]:  # Only show next 5 periods.
@@ -133,3 +132,4 @@ async def get_forecast(latitude: float, longitude: float) -> str:
         forecasts.append(forecast)
 
     return "\n".join(forecasts)
+
