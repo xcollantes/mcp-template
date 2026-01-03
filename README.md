@@ -13,6 +13,12 @@ Find `# TODO` comments and implement them.
 Do not use `print` statements for logging. Use the logging module instead.
 Writing to stdout will corrupt the JSON-RPC messages and break your server.
 
+## Docstrings
+
+Docstrings are especially important as this is the human readable text that the
+LLM has context of. This will be treated as part of the prompt when fed to the
+LLM and this will decide when to use each tool.
+
 ## Getting Started
 
 ### How it works

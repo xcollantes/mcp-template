@@ -3,10 +3,9 @@
 import logging
 
 from mcp_server import get_mcp_server
-
+import tools  # noqa: F401 - Import to register tools with MCP server.
 
 logger: logging.Logger = logging.getLogger(__name__)
-
 
 
 def main() -> None:

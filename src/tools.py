@@ -61,7 +61,7 @@ async def get_forecast(latitude: float, longitude: float) -> str:
 
     # Get the forecast URL from the points response
     forecast_url = points_data["properties"]["forecast"]
-    forecast_data = await points_data = await make_request(forecast_url, USER_AGENT)
+    forecast_data = await make_request(forecast_url, USER_AGENT)
 
     if not forecast_data:
         return "Unable to fetch detailed forecast."
@@ -79,3 +79,5 @@ async def get_forecast(latitude: float, longitude: float) -> str:
         """
         )
         forecasts.append(forecast)
+
+    return "\n".join(forecasts)
