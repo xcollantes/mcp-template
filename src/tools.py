@@ -17,10 +17,27 @@ USER_AGENT = "weather-app/1.0"
 mcp: FastMCP = get_mcp_server()
 
 
-@mcp.tool()
+@mcp.tool(
+    name="get_weather",
+    title="Get weather forecast data for a location.",
+    description="Retrieves weather forecast information from the National Weather Service API for the specified location. The location should be in the format of latitude,longitude (e.g., '47.7623,-122.2054').",
+)
 def get_weather(location: str) -> dict:
-    """Get weather by state."""
+    """Get weather forecast data for a location.
 
+    Retrieves weather forecast information from the National Weather Service API
+    for the specified location. The location should be in the format of
+    latitude,longitude (e.g., "47.7623,-122.2054").
+
+    Args:
+        location: Location coordinates in "latitude,longitude" format or location identifier.
+
+    Returns:
+        A dictionary containing the raw weather forecast data from the API.
+
+    Raises:
+        httpx.HTTPStatusError: If the API request fails or returns an error status.
+    """
     response = httpx.get(
         f"{WEATHER_API_BASE}/points/{location}/forecast",
         params={"apikey": WEATHER_API_KEY},
@@ -29,10 +46,27 @@ def get_weather(location: str) -> dict:
     return response.json()
 
 
-@mcp.tool()
+@mcp.tool(
+    name="get_alerts",
+    title="Get active weather alerts for a U.S. state.",
+    description="Retrieves all currently active weather alerts, warnings, and advisories issued by the National Weather Service for the specified state. This includes severe weather warnings, flood advisories, winter weather alerts, and more.",
+)
 async def get_alerts(state: str) -> str:
-    """Get weather alerts for a state."""
+    """Get active weather alerts for a U.S. state.
 
+    Retrieves all currently active weather alerts, warnings, and advisories
+    issued by the National Weather Service for the specified state. This includes
+    severe weather warnings, flood advisories, winter weather alerts, and more.
+
+    Args:
+        state: Two-letter U.S. state code (e.g., "WA" for Washington, "CA" for California).
+
+    Returns:
+        A formatted string containing all active weather alerts for the state,
+        with each alert separated by "---". Each alert includes event type, area,
+        severity, description, and instructions. Returns a message if no alerts
+        are found or if the request fails.
+    """
     url: str = f"{WEATHER_API_BASE}/alerts/active/area/{state}"
 
     data = await make_request(url, USER_AGENT)
@@ -43,13 +77,28 @@ async def get_alerts(state: str) -> str:
     return "\n---\n".join(alerts)
 
 
-@mcp.tool()
+@mcp.tool(
+    name="get_forecast",
+    title="Get detailed weather forecast for a specific location.",
+    description="Retrieves a multi-period weather forecast from the National Weather Service for the specified coordinates. The forecast includes temperature, wind conditions, and detailed descriptions for the next 5 forecast periods (typically covering the next 2-3 days).",
+)
 async def get_forecast(latitude: float, longitude: float) -> str:
-    """Get weather forecast for a location.
+    """Get detailed weather forecast for a specific location.
+
+    Retrieves a multi-period weather forecast from the National Weather Service
+    for the specified coordinates. The forecast includes temperature, wind conditions,
+    and detailed descriptions for the next 5 forecast periods (typically covering
+    the next 2-3 days).
 
     Args:
-        latitude: Latitude of the location
-        longitude: Longitude of the location
+        latitude: Latitude coordinate of the location (e.g., 47.7623 for Bothell, WA).
+        longitude: Longitude coordinate of the location (e.g., -122.2054 for Bothell, WA).
+
+    Returns:
+        A formatted string containing the weather forecast for the next 5 periods,
+        with each period showing the period name, temperature, wind speed and direction,
+        and a detailed forecast description. Returns an error message if the forecast
+        cannot be retrieved for the specified location.
     """
 
     # First get the forecast grid endpoint
