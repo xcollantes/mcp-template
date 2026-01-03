@@ -21,6 +21,7 @@ mcp: FastMCP = get_mcp_server()
     name="get_weather",
     title="Get weather forecast data for a location.",
     description="Retrieves weather forecast information from the National Weather Service API for the specified location. The location should be in the format of latitude,longitude (e.g., '47.7623,-122.2054').",
+    parameters=["location"],
 )
 def get_weather(location: str) -> dict:
     """Get weather forecast data for a location.
@@ -50,6 +51,7 @@ def get_weather(location: str) -> dict:
     name="get_alerts",
     title="Get active weather alerts for a U.S. state.",
     description="Retrieves all currently active weather alerts, warnings, and advisories issued by the National Weather Service for the specified state. This includes severe weather warnings, flood advisories, winter weather alerts, and more.",
+    parameters=["state"],
 )
 async def get_alerts(state: str) -> str:
     """Get active weather alerts for a U.S. state.
@@ -81,6 +83,7 @@ async def get_alerts(state: str) -> str:
     name="get_forecast",
     title="Get detailed weather forecast for a specific location.",
     description="Retrieves a multi-period weather forecast from the National Weather Service for the specified coordinates. The forecast includes temperature, wind conditions, and detailed descriptions for the next 5 forecast periods (typically covering the next 2-3 days).",
+    parameters=["latitude", "longitude"],
 )
 async def get_forecast(latitude: float, longitude: float) -> str:
     """Get detailed weather forecast for a specific location.
