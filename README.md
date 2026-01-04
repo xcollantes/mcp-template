@@ -21,11 +21,38 @@ prompt when fed to the LLM and this will decide when to use each tool.
 
 ## Installation
 
+### Option 1: Install globally with pipx (Recommended)
+
+```bash
+# Install pipx if you haven't already
+brew install pipx
+pipx ensurepath
+
+# Clone and install the MCP server
+git clone https://github.com/xcollantes/mcp-template.git
+cd mcp-template
+pipx install -e .
+```
+
+Now you can run the MCP server directly:
+
+```bash
+mcp-template --help
+mcp-template --debug  # Run with debug logging
+```
+
+### Option 2: Development setup with uv
+
 Get repo:
 
 ```bash
 git clone https://github.com/xcollantes/mcp-template.git
+cd mcp-template
 ```
+
+Install UV: <https://docs.astral.sh/uv/getting-started/installation/>
+
+### Option 3: Manual setup
 
 Add MCP server to your choice of LLM client:
 
@@ -38,19 +65,30 @@ Usually the JSON file for the LLM client will look like this:
   "mcpServers": {
     "weather": {
       "command": "uv",
-      "args": ["--directory", "/ABSOLUTE/PATH/TO/REPO/src", "run", "main.py"]
+      "args": ["--directory", "/ABSOLUTE/PATH/TO/REPO", "run", "mcp-template"]
     }
   }
 }
 ```
 
-You may need to install `uv`.
-
-Install UV: <https://docs.astral.sh/uv/getting-started/installation/>
-
 This will tell your LLM client application that there's a tool that can be
-called by calling `uv --directory
-/ABSOLUTE/PATH/TO/PARENT/FOLDER/src run main.py`.
+called by calling `uv --directory /ABSOLUTE/PATH/TO/REPO run mcp-template`.
+
+### CLI Usage
+
+When installed globally with pipx, you can use these commands:
+
+```bash
+mcp-template              # Run the MCP server
+mcp-template --debug      # Run with debug logging
+mcp-template --help       # Show help
+```
+
+### Environment Variables
+
+Set the following environment variables if needed:
+
+- `WEATHER_API_KEY`: API key for weather services (optional for basic weather.gov API)
 
 ## How it works
 
