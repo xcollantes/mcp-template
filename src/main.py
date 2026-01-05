@@ -7,6 +7,7 @@ import argparse
 import logging
 import os
 import sys
+import textwrap
 from typing import Annotated, Any
 
 import httpx
@@ -97,7 +98,28 @@ async def get_forecast_tool(
     """Get detailed weather forecast for a specific location."""
 
     try:
-        return await get_forecast(latitude, longitude, WEATHER_API_KEY, USER_AGENT)
+        forecast_data: dict[str, Any] = await get_forecast(
+            latitude, longitude, USER_AGENT, WEATHER_API_BASE
+        )
+
+        # Format the periods into a readable forecast.
+        periods: list[dict[str, Any]] = forecast_data.get("properties", {}).get(
+            "periods", []
+        )
+        forecasts: list[str] = []
+        for period in periods[:5]:  # Only show next 5 periods.
+            forecast: str = textwrap.dedent(
+                f"""
+            {period["name"]}:
+            Temperature: {period["temperature"]}°{period["temperatureUnit"]}
+            Wind: {period["windSpeed"]} {period["windDirection"]}
+            Forecast: {period["detailedForecast"]}
+            """
+            )
+            forecasts.append(forecast)
+
+        logger.debug("Forecast data: %s", forecasts)
+        return "\n".join(forecasts)
 
     except httpx.HTTPStatusError as e:
         logger.error(
