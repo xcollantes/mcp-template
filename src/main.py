@@ -10,10 +10,13 @@ import sys
 import textwrap
 from typing import Annotated, Any
 
+import dotenv
 import httpx
 from mcp.server.fastmcp import FastMCP
 
 from src.tools.tool_utils import format_alert, get_alerts, get_forecast, get_weather
+
+dotenv.load_dotenv()
 
 logger: logging.Logger = logging.getLogger(__name__)
 
