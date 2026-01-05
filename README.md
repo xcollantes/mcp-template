@@ -21,7 +21,18 @@ prompt when fed to the LLM and this will decide when to use each tool.
 
 ## Installation
 
-### Option 1: Install globally with pipx (Recommended)
+### Option 1: Development setup with uv
+
+Get repo:
+
+```bash
+git clone https://github.com/xcollantes/mcp-template.git  # TODO: Change to your own repository.
+cd mcp-template
+```
+
+Install UV: <https://docs.astral.sh/uv/getting-started/installation/>
+
+### Option 2: Install globally with pipx
 
 ```bash
 # Install pipx if you haven't already
@@ -29,7 +40,7 @@ brew install pipx
 pipx ensurepath
 
 # Clone and install the MCP server
-git clone https://github.com/xcollantes/mcp-template.git
+git clone https://github.com/xcollantes/mcp-template.git  # TODO: Change to your own repository.
 cd mcp-template
 pipx install -e .
 ```
@@ -40,17 +51,6 @@ Now you can run the MCP server directly:
 mcp-template --help
 mcp-template --debug  # Run with debug logging
 ```
-
-### Option 2: Development setup with uv
-
-Get repo:
-
-```bash
-git clone https://github.com/xcollantes/mcp-template.git
-cd mcp-template
-```
-
-Install UV: <https://docs.astral.sh/uv/getting-started/installation/>
 
 ### Option 3: Manual setup
 
@@ -65,30 +65,14 @@ Usually the JSON file for the LLM client will look like this:
   "mcpServers": {
     "weather": {
       "command": "uv",
-      "args": ["--directory", "/ABSOLUTE/PATH/TO/REPO", "run", "mcp-template"]
+      "args": ["--directory", "/ABSOLUTE/PATH/TO/REPO", "run", "python", "-m", "src.main"]
     }
   }
 }
 ```
 
 This will tell your LLM client application that there's a tool that can be
-called by calling `uv --directory /ABSOLUTE/PATH/TO/REPO run mcp-template`.
-
-### CLI Usage
-
-When installed globally with pipx, you can use these commands:
-
-```bash
-mcp-template              # Run the MCP server
-mcp-template --debug      # Run with debug logging
-mcp-template --help       # Show help
-```
-
-### Environment Variables
-
-Set the following environment variables if needed:
-
-- `WEATHER_API_KEY`: API key for weather services (optional for basic weather.gov API)
+called by calling `uv --directory /ABSOLUTE/PATH/TO/REPO run python -m src.main`.
 
 ## How it works
 
