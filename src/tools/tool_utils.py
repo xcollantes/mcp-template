@@ -17,6 +17,7 @@ def todo_example_tool(task: Annotated[str, "A task to complete."]) -> str:
 """
 
 import logging
+import subprocess
 import textwrap
 from typing import Any
 
@@ -58,6 +59,32 @@ async def _make_request(url: str, user_agent: str) -> Any:
             raise e
 
 
+def example_tool_cli() -> dict[str, Any]:
+    """Example tool to demonstrate how to use the tool helper functions in the
+    CLI.
+
+    Some actual ability may exist in the command line. This example shows how to
+    call some CLI program and return the output to the LLM.
+    """
+
+    command: list[str] = ["ls", "-l"]
+
+    logger.debug("Running command: %s", command)
+    process_output: subprocess.CompletedProcess[str] = subprocess.run(
+        command,
+        capture_output=True,
+        text=True,
+        check=True,
+    )
+
+    logger.debug("Command output: %s", process_output)
+
+    if process_output.returncode != 0:
+        raise ValueError(f"Error in running command: {process_output.stderr}")
+
+    return process_output.stdout
+
+
 def get_weather(location: str, api_key: str, weather_api_base: str) -> dict[str, Any]:
     """Get weather forecast data for a location."""
 
@@ -83,10 +110,9 @@ def get_alerts(state: str, api_key: str, weather_api_base: str) -> dict[str, Any
 async def get_forecast(
     latitude: float,
     longitude: float,
-    api_key: str,
     user_agent: str,
     weather_api_base: str,
-) -> str:
+) -> dict[str, Any]:
     """Get detailed weather forecast for a specific location."""
 
     # First get the forecast grid endpoint.
@@ -94,27 +120,16 @@ async def get_forecast(
     points_data: dict[str, Any] = await _make_request(points_url, user_agent)
 
     if not points_data:
-        return "Unable to fetch forecast data for this location."
+        raise ValueError("Unable to fetch forecast data for this location.")
 
     # Get the forecast URL from the points response.
     forecast_url: str = points_data["properties"]["forecast"]
+
+    logger.debug("Forecast URL: %s", forecast_url)
+
     forecast_data: dict[str, Any] = await _make_request(forecast_url, user_agent)
 
     if not forecast_data:
-        return "Unable to fetch detailed forecast."
+        raise ValueError("Unable to fetch detailed forecast.")
 
-    # Format the periods into a readable forecast.
-    periods: list[dict[str, Any]] = forecast_data["properties"]["periods"]
-    forecasts: list[str] = []
-    for period in periods[:5]:  # Only show next 5 periods.
-        forecast: str = textwrap.dedent(
-            f"""
-        {period["name"]}:
-        Temperature: {period["temperature"]}°{period["temperatureUnit"]}
-        Wind: {period["windSpeed"]} {period["windDirection"]}
-        Forecast: {period["detailedForecast"]}
-        """
-        )
-        forecasts.append(forecast)
-
-    return "\n".join(forecasts)
+    return forecast_data
