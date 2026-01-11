@@ -26,7 +26,7 @@ WEATHER_API_KEY = os.getenv("WEATHER_API_KEY")
 USER_AGENT = "weather-app/1.0"
 
 # Create the MCP server instance.
-mcp: FastMCP = FastMCP("TODO: weather")
+mcp: FastMCP = FastMCP("MY_MCP_NAME")
 
 
 def setup_logging(debug: bool = False) -> None:
@@ -41,6 +41,7 @@ def setup_logging(debug: bool = False) -> None:
     )
 
 
+# TODO: Example tool definition. Replace with your own tools.
 @mcp.tool(
     name="get_weather",
     title="Get weather forecast data for a location.",
@@ -137,7 +138,7 @@ async def get_forecast_tool(
 def main() -> None:
     """Main entry point for the MCP server."""
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
-        description="MCP Weather Server: Provides weather tools for LLM clients."
+        description="MY_MCP_NAME: MY_MCP_DESCRIPTION"
     )
     parser.add_argument("--debug", action="store_true", help="Enable debug logging.")
 
@@ -145,7 +146,7 @@ def main() -> None:
 
     setup_logging(args.debug)
 
-    logger.info("Starting MCP Weather server...")
+    logger.info("Starting MY_MCP_NAME server...")
     mcp.run(transport="stdio")
 
 

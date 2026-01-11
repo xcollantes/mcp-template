@@ -3,14 +3,15 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "mcp-template"
+name = "MY_MCP_PACKAGE_NAME"
 version = "0.1.0"
-description = "TODO: MCP Weather Server - Provides weather tools for LLM clients"
+description = "MY_MCP_DESCRIPTION"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "httpx>=0.28.1",
     "mcp[cli]>=1.25.0",
+    "python-dotenv>=1.0.1",
 ]
 
 [tool.hatch.build.targets.wheel]
@@ -20,4 +21,4 @@ packages = ["src"]
 line-length = 80
 
 [project.scripts]
-mcp-template = "src.main:main"
+MY_MCP_PACKAGE_NAME = "src.main:main"

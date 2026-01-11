@@ -1,10 +1,13 @@
-"""TODO: Example tool helper functions.
+"""Helper functions for MCP tools.
+
+This module contains utility functions that can be used by the tools defined
+in main.py. Move complex logic here to keep tool definitions clean.
 
 Example tool definition in main.py:
 
 ```python
 @mcp.tool(
-    name="todo_example_tool",
+    name="example_tool",
     title="A tool to complete a task.",
     description="A tool to complete a task.",
 )
