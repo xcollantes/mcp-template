@@ -1,1 +1,1 @@
-"""Unit tests for jira-mcp."""
+"""Unit tests."""
