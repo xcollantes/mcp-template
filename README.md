@@ -12,7 +12,7 @@ Find All and Replace these variables throughout the project:
 |----------|-------------|---------|
 | `TODO` | General placeholders |  |
 | `MY_MCP_NAME` | Human-readable name | `Weather MCP` |
-| `MY_MCP_DESCRIPTION` | One-liner description | `MCP server for interacting with the National Weather Service API.` |
+| `MY_MCP_DESCRIPTION` | One-liner description | `MCP server for interacting with the Weather API.` |
 | `MY_MCP_REPO_URL` | Full GitHub repo URL | `https://github.com/xcollantes/weather-mcp` |
 | `MY_MCP_PACKAGE_NAME` | Package name for CLI/binaries | `weather-mcp` |
 | `MY_MCP_SERVER_KEY` | Key in mcpServers JSON config | `weather` |
@@ -263,6 +263,9 @@ manually on all files:
 ```bash
 uv run pre-commit run --all-files
 ```
+
+NOTE: A developer can skip installing pre-commit hook and formatting checks but
+the CI/CD workflow will fail if the checks are not passed.
 
 ### Tests
 
