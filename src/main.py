@@ -87,16 +87,18 @@ def get_weather_tool(
     ),
 )
 async def get_alerts_tool(
-    state: Annotated[str, "Two-letter U.S. state code, for example 'WA' or 'CA'."],
+    state: Annotated[
+        str, "Two-letter U.S. state code, for example 'WA' or 'CA'."
+    ],
 ) -> str:
     """Get active weather alerts for a U.S. state."""
     try:
         return "\n".join(
             [
                 format_alert(feature)
-                for feature in get_alerts(state, WEATHER_API_KEY, WEATHER_API_BASE)[
-                    "features"
-                ]
+                for feature in get_alerts(
+                    state, WEATHER_API_KEY, WEATHER_API_BASE
+                )["features"]
             ]
         )
 
@@ -120,8 +122,12 @@ async def get_alerts_tool(
     ),
 )
 async def get_forecast_tool(
-    latitude: Annotated[float, "Latitude in decimal degrees, for example 47.7623."],
-    longitude: Annotated[float, "Longitude in decimal degrees, for example -122.2054."],
+    latitude: Annotated[
+        float, "Latitude in decimal degrees, for example 47.7623."
+    ],
+    longitude: Annotated[
+        float, "Longitude in decimal degrees, for example -122.2054."
+    ],
 ) -> str:
     """Get detailed weather forecast for a specific location."""
     try:
