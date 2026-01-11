@@ -14,7 +14,12 @@ import dotenv
 import httpx
 from mcp.server.fastmcp import FastMCP
 
-from src.tools.tool_utils import format_alert, get_alerts, get_forecast, get_weather
+from src.tools.tool_utils import (
+    format_alert,
+    get_alerts,
+    get_forecast,
+    get_weather,
+)
 
 dotenv.load_dotenv()
 
@@ -45,7 +50,12 @@ def setup_logging(debug: bool = False) -> None:
 @mcp.tool(
     name="get_weather",
     title="Get weather forecast data for a location.",
-    description="Retrieves weather forecast information from the National Weather Service API for the specified location. The location should be in the format of latitude,longitude (e.g., '47.7623,-122.2054').",
+    description=(
+        "Retrieves weather forecast information from the National "
+        "annotations Weather Service API for the specified location. The location "
+        "should be in the format of latitude,longitude "
+        "(e.g., '47.7623,-122.2054')."
+    ),
 )
 def get_weather_tool(
     location: Annotated[
@@ -54,13 +64,14 @@ def get_weather_tool(
     ],
 ) -> dict[str, Any]:
     """Get weather forecast data for a location."""
-
     try:
         return get_weather(location, WEATHER_API_KEY, WEATHER_API_BASE)
 
     except httpx.HTTPStatusError as e:
         logger.error(
-            "Failed to get weather forecast data for location: %s: %s", location, e
+            "Failed to get weather forecast data for location: %s: %s",
+            location,
+            e,
         )
         raise e
 
@@ -68,13 +79,17 @@ def get_weather_tool(
 @mcp.tool(
     name="get_alerts",
     title="Get active weather alerts for a U.S. state.",
-    description="Retrieves all currently active weather alerts, warnings, and advisories issued by the National Weather Service for the specified state. This includes severe weather warnings, flood advisories, winter weather alerts, and more.",
+    description=(
+        "Retrieves all currently active weather alerts, warnings, and advisories "
+        "issued by the National Weather Service for the specified state. This "
+        "includes severe weather warnings, flood advisories, winter weather alerts, "
+        "and more."
+    ),
 )
 async def get_alerts_tool(
     state: Annotated[str, "Two-letter U.S. state code, for example 'WA' or 'CA'."],
 ) -> str:
     """Get active weather alerts for a U.S. state."""
-
     try:
         return "\n".join(
             [
@@ -86,21 +101,29 @@ async def get_alerts_tool(
         )
 
     except httpx.HTTPStatusError as e:
-        logger.error("Failed to get active weather alerts for state: %s: %s", state, e)
+        logger.error(
+            "Failed to get active weather alerts for state: %s: %s",
+            state,
+            e,
+        )
         raise e
 
 
 @mcp.tool(
     name="get_forecast",
     title="Get detailed weather forecast for a specific location.",
-    description="Retrieves a multi-period weather forecast from the National Weather Service for the specified coordinates. The forecast includes temperature, wind conditions, and detailed descriptions for the next 5 forecast periods (typically covering the next 2-3 days).",
+    description=(
+        "Retrieves a multi-period weather forecast from the National Weather "
+        "Service for the specified coordinates. The forecast includes temperature, "
+        "wind conditions, and detailed descriptions for the next 5 forecast periods "
+        "(typically covering the next 2-3 days)."
+    ),
 )
 async def get_forecast_tool(
     latitude: Annotated[float, "Latitude in decimal degrees, for example 47.7623."],
     longitude: Annotated[float, "Longitude in decimal degrees, for example -122.2054."],
 ) -> str:
     """Get detailed weather forecast for a specific location."""
-
     try:
         forecast_data: dict[str, Any] = await get_forecast(
             latitude, longitude, USER_AGENT, WEATHER_API_BASE
@@ -114,10 +137,10 @@ async def get_forecast_tool(
         for period in periods[:5]:  # Only show next 5 periods.
             forecast: str = textwrap.dedent(
                 f"""
-            {period["name"]}:
-            Temperature: {period["temperature"]}°{period["temperatureUnit"]}
-            Wind: {period["windSpeed"]} {period["windDirection"]}
-            Forecast: {period["detailedForecast"]}
+            {period["name"]}: Temperature:
+            {period["temperature"]}°{period["temperatureUnit"]} Wind:
+            {period["windSpeed"]} {period["windDirection"]} Forecast:
+            {period["detailedForecast"]}
             """
             )
             forecasts.append(forecast)
@@ -140,7 +163,11 @@ def main() -> None:
     parser: argparse.ArgumentParser = argparse.ArgumentParser(
         description="MY_MCP_NAME: MY_MCP_DESCRIPTION"
     )
-    parser.add_argument("--debug", action="store_true", help="Enable debug logging.")
+    parser.add_argument(
+        "--debug",
+        action="store_true",
+        help="Enable debug logging.",
+    )
 
     args: argparse.Namespace = parser.parse_args()
 
