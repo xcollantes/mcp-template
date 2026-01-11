@@ -26,7 +26,6 @@ from typing import Any
 
 import httpx
 
-
 logger: logging.Logger = logging.getLogger(__name__)
 
 
@@ -69,7 +68,6 @@ def example_tool_cli() -> dict[str, Any]:
     Some actual ability may exist in the command line. This example shows how to
     call some CLI program and return the output to the LLM.
     """
-
     command: list[str] = ["ls", "-l"]
 
     logger.debug("Running command: %s", command)
@@ -88,9 +86,10 @@ def example_tool_cli() -> dict[str, Any]:
     return process_output.stdout
 
 
-def get_weather(location: str, api_key: str, weather_api_base: str) -> dict[str, Any]:
+def get_weather(
+    location: str, api_key: str, weather_api_base: str
+) -> dict[str, Any]:
     """Get weather forecast data for a location."""
-
     response: httpx.Response = httpx.get(
         f"{weather_api_base}/points/{location}/forecast",
         params={"apikey": api_key},
@@ -99,9 +98,10 @@ def get_weather(location: str, api_key: str, weather_api_base: str) -> dict[str,
     return response.json()
 
 
-def get_alerts(state: str, api_key: str, weather_api_base: str) -> dict[str, Any]:
+def get_alerts(
+    state: str, api_key: str, weather_api_base: str
+) -> dict[str, Any]:
     """Get active weather alerts for a U.S. state."""
-
     response: httpx.Response = httpx.get(
         f"{weather_api_base}/alerts/active/area/{state}",
         params={"apikey": api_key},
@@ -117,7 +117,6 @@ async def get_forecast(
     weather_api_base: str,
 ) -> dict[str, Any]:
     """Get detailed weather forecast for a specific location."""
-
     # First get the forecast grid endpoint.
     points_url: str = f"{weather_api_base}/points/{latitude},{longitude}"
     points_data: dict[str, Any] = await _make_request(points_url, user_agent)
@@ -130,7 +129,9 @@ async def get_forecast(
 
     logger.debug("Forecast URL: %s", forecast_url)
 
-    forecast_data: dict[str, Any] = await _make_request(forecast_url, user_agent)
+    forecast_data: dict[str, Any] = await _make_request(
+        forecast_url, user_agent
+    )
 
     if not forecast_data:
         raise ValueError("Unable to fetch detailed forecast.")
