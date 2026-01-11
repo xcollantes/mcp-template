@@ -4,17 +4,23 @@ TODO: Oneliner description of your MCP server.
 
 ## Template Setup
 
+*Remove the Template Setup section after you have replaced all the variables.*
+
 Find All and Replace these variables throughout the project:
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `MY_MCP_NAME` | Human-readable name | `Jira MCP` |
-| `MY_MCP_DESCRIPTION` | One-liner description | `MCP server for interacting with Jira issues and projects.` |
-| `MY_MCP_REPO_URL` | Full GitHub repo URL | `https://github.com/xcollantes/jira-mcp` |
-| `MY_MCP_PACKAGE_NAME` | Package name for CLI/binaries | `jira-mcp` |
-| `MY_MCP_SERVER_KEY` | Key in mcpServers JSON config | `jira` |
-| `MY_MCP_ENV_VAR_PREFIX` | Prefix for environment variables | `JIRA` |
+| `TODO` | General placeholders |  |
+| `MY_MCP_NAME` | Human-readable name | `Weather MCP` |
+| `MY_MCP_DESCRIPTION` | One-liner description | `MCP server for interacting with the National Weather Service API.` |
+| `MY_MCP_REPO_URL` | Full GitHub repo URL | `https://github.com/xcollantes/weather-mcp` |
+| `MY_MCP_PACKAGE_NAME` | Package name for CLI/binaries | `weather-mcp` |
+| `MY_MCP_SERVER_KEY` | Key in mcpServers JSON config | `weather` |
+| `MY_MCP_ENV_VAR_PREFIX` | Prefix for environment variables | `WEATHER` |
 | `MY_MCP_AUTHOR` | Author name for LICENSE | `Xavier Collantes` |
+
+**See more under [Development](#development) section for CI/CD, formatting, tests,
+logging, and setup for pre-commit hooks.**
 
 ## Installation
 
@@ -195,6 +201,53 @@ pipx install -e .
    - Some action is performed using the MCP server
 
 ## Development
+
+### CI/CD
+
+Setup for CI/CD to build and release the MCP server on multiple operating
+systems and architectures.
+
+- The `.github/workflows/ci.yml` file is used to run the tests and linting checks.
+- The `.github/workflows/release.yml` file is used to build and release the MCP
+server on multiple operating systems and architectures.
+  - Tag the release with the format `vX.X.X`.
+  - The release will be built and released to the Releases page on your GitHub repository.
+
+### Formatting
+
+This project uses [ruff](https://docs.astral.sh/ruff/) for linting and
+formatting. The `.pre-commit-config.yaml` file is used to run the linting and
+formatting checks before each commit.
+
+To set up pre-commit hooks:
+
+```bash
+uv sync
+uv run pre-commit install
+```
+
+Once installed, ruff will automatically run when you commit. To run checks manually on all files:
+
+```bash
+uv run pre-commit run --all-files
+```
+
+### Tests
+
+This project uses [pytest](https://docs.pytest.org/) for testing. The `tests`
+directory is used to store the test files.
+
+To run the tests:
+
+```bash
+uv run pytest
+```
+
+To run the tests with coverage:
+
+```bash
+uv run pytest --cov=src
+```
 
 ### Logging
 
