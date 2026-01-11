@@ -20,10 +20,25 @@ packages = ["src"]
 [tool.ruff]
 line-length = 80
 
+[tool.ruff.lint]
+extend-select = [
+  "E501", # Line too long.
+  "I", # isort
+  "D", # Docstrings. Define the type below.
+]
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
 [dependency-groups]
 dev = [
     "pre-commit>=4.5.1",
     "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
     "ruff>=0.14.11",
 ]
 
