@@ -202,6 +202,35 @@ pipx install -e .
 
 ## Development
 
+### Testing In Cursor/Windsurf
+
+To test the MCP server in Cursor/Windsurf, you can use the MCP client to test
+the MCP server.
+
+Add this to the MCP client configuration in Cursor/Windsurf:
+
+```json
+{
+  "mcpServers": {
+    "MY_MCP_SERVER_KEY": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/ABSOLUTE/PATH/TO/REPO/ROOT",
+        "run",
+        "python",
+        "-m",
+        "src.main",
+        "--debug"
+      ]
+    }
+  }
+}
+```
+
+This will start the MCP server and you can then use the MCP server in
+Cursor/Windsurf. You may need to restart in the MCP settings to see the changes.
+
 ### CI/CD
 
 Setup for CI/CD to build and release the MCP server on multiple operating
