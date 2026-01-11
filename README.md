@@ -1,6 +1,6 @@
 # MCP Template
 
-TODO: Oneliner description of your MCP server.
+MY_MCP_DESCRIPTION
 
 ## Template Setup
 
@@ -19,8 +19,8 @@ Find All and Replace these variables throughout the project:
 | `MY_MCP_ENV_VAR_PREFIX` | Prefix for environment variables | `WEATHER` |
 | `MY_MCP_AUTHOR` | Author name for LICENSE | `Xavier Collantes` |
 
-**See more under [Development](#development) section for CI/CD, formatting, tests,
-logging, and setup for pre-commit hooks.**
+**See more under [Development](#development) section for CI/CD, formatting,
+tests, logging, and setup for pre-commit hooks.**
 
 ## Installation
 
@@ -58,8 +58,8 @@ sudo mv MY_MCP_PACKAGE_NAME-linux /usr/local/bin/
 
 Add to your LLM client configuration:
 
-**NOTE:** Make sure to replace `/usr/local/bin/MY_MCP_PACKAGE_NAME-linux` with the path to the
-binary on your machine if you moved it to a different location.
+**NOTE:** Make sure to replace `/usr/local/bin/MY_MCP_PACKAGE_NAME-linux` with
+the path to the binary on your machine if you moved it to a different location.
 
 ```json
 {
@@ -97,8 +97,8 @@ xattr -d com.apple.quarantine /usr/local/bin/MY_MCP_PACKAGE_NAME
 
 Add to your LLM client configuration:
 
-**NOTE:** Make sure to replace `/usr/local/bin/MY_MCP_PACKAGE_NAME` with the path to the
-binary on your machine if you moved it to a different location.
+**NOTE:** Make sure to replace `/usr/local/bin/MY_MCP_PACKAGE_NAME` with the
+path to the binary on your machine if you moved it to a different location.
 
 ```json
 {
@@ -130,8 +130,8 @@ Add to your LLM client configuration:
 ```
 
 **NOTE:** Make sure to replace `C:\\Program
-Files\\MY_MCP_PACKAGE_NAME\\MY_MCP_PACKAGE_NAME-windows.exe` with the path to the binary on your
-machine if you moved it to a different location.
+Files\\MY_MCP_PACKAGE_NAME\\MY_MCP_PACKAGE_NAME-windows.exe` with the path to
+the binary on your machine if you moved it to a different location.
 
 ### MCP Server: Option 2: Development setup with uv
 
@@ -207,11 +207,13 @@ pipx install -e .
 Setup for CI/CD to build and release the MCP server on multiple operating
 systems and architectures.
 
-- The `.github/workflows/ci.yml` file is used to run the tests and linting checks.
+- The `.github/workflows/ci.yml` file is used to run the tests and linting
+  checks.
 - The `.github/workflows/release.yml` file is used to build and release the MCP
 server on multiple operating systems and architectures.
   - Tag the release with the format `vX.X.X`.
-  - The release will be built and released to the Releases page on your GitHub repository.
+  - The release will be built and released to the Releases page on your GitHub
+    repository.
 
 ### Formatting
 
@@ -226,7 +228,8 @@ uv sync
 uv run pre-commit install
 ```
 
-Once installed, ruff will automatically run when you commit. To run checks manually on all files:
+Once installed, ruff will automatically run when you commit. To run checks
+manually on all files:
 
 ```bash
 uv run pre-commit run --all-files
