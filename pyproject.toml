@@ -20,5 +20,11 @@ packages = ["src"]
 [tool.ruff]
 line-length = 80
 
+[dependency-groups]
+dev = [
+    "pytest>=9.0.2",
+    "ruff>=0.14.11",
+]
+
 [project.scripts]
 MY_MCP_PACKAGE_NAME = "src.main:main"
